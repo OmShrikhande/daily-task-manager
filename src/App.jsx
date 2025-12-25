@@ -43,13 +43,29 @@ function AppContent() {
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
   const [activeView, setActiveView] = useState('dashboard');
-  const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
+  const [sidebarCollapsed, setSidebarCollapsed] = useState(window.innerWidth < 768);
   const [tasks, setTasks] = useState([]);
   const { isDarkMode } = useTheme();
 
   useEffect(() => {
+    const handleResize = () => {
+      if (window.innerWidth < 768) {
+        setSidebarCollapsed(true);
+      } else {
+        setSidebarCollapsed(false);
+      }
+    };
+
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
+
+  useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
       setUser(currentUser);
+      if (!currentUser) {
+        setTasks([]);
+      }
       setLoading(false);
     });
     return () => unsubscribe();
@@ -61,10 +77,7 @@ function AppContent() {
 
   // Subscribe to tasks when there's an authenticated user
   useEffect(() => {
-    if (!user) {
-      setTasks([]);
-      return;
-    }
+    if (!user) return;
 
     const tasksQuery = query(
       collection(db, 'tasks'),

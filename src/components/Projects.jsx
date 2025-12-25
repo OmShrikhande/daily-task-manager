@@ -11,7 +11,7 @@ import {
 
 // Hoisted, memoized project card to avoid re-creation during render and unnecessary re-renders
 const ProjectCard = React.memo(({ project, onSelect }) => (
-  <motion.div
+  <Motion.div
     className="project-card"
     whileHover={{ y: -4 }}
     onClick={() => onSelect(project)}
@@ -57,7 +57,7 @@ const ProjectCard = React.memo(({ project, onSelect }) => (
         </div>
       </div>
     </div>
-  </motion.div>
+  </Motion.div>
 ));
 
 const Projects = ({ tasks }) => {
@@ -164,14 +164,14 @@ const Projects = ({ tasks }) => {
 
       <AnimatePresence>
         {selectedProject && (
-          <motion.div
+          <Motion.div
             className="project-modal-overlay"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             onClick={() => setSelectedProject(null)}
           >
-            <motion.div
+            <Motion.div
               className="project-modal"
               initial={{ opacity: 0, scale: 0.8 }}
               animate={{ opacity: 1, scale: 1 }}

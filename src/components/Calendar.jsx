@@ -71,14 +71,14 @@ const Calendar = ({ tasks, onAddTask }) => {
           
           <h2>{monthNames[currentDate.getMonth()]} {currentDate.getFullYear()}</h2>
           
-          <motion.button
+          <Motion.button
             className="nav-btn"
             onClick={() => navigateMonth(1)}
             whileHover={{ scale: 1.1 }}
             whileTap={{ scale: 0.9 }}
           >
             <ChevronRight size={20} />
-          </motion.button>
+          </Motion.button>
         </div>
         
         <Motion.button
@@ -89,7 +89,7 @@ const Calendar = ({ tasks, onAddTask }) => {
         >
           <Plus size={16} />
           Add Task
-        </motion.button>
+        </Motion.button>
       </div>
 
       <div className="calendar-grid">
@@ -138,7 +138,7 @@ const Calendar = ({ tasks, onAddTask }) => {
                     </div>
                   </div>
                 )}
-              </motion.div>
+              </Motion.div>
             ))}
           </AnimatePresence>
         </div>
@@ -185,7 +185,7 @@ const Calendar = ({ tasks, onAddTask }) => {
               ) : (
                 <div className="task-list">
                   {selectedDayTasks.map(task => (
-                    <motion.div
+                    <Motion.div
                       key={task.id}
                       className={`task-item ${task.status}`}
                       initial={{ opacity: 0, x: -20 }}
@@ -210,12 +210,12 @@ const Calendar = ({ tasks, onAddTask }) => {
                       <div className={`status-badge ${task.status}`}>
                         {task.status}
                       </div>
-                    </motion.div>
+                    </Motion.div>
                   ))}
                 </div>
               )}
             </div>
-          </motion.div>
+          </Motion.div>
         )}
       </AnimatePresence>
     </div>
