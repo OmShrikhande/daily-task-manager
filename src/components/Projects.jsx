@@ -1,16 +1,67 @@
-import { useState, useMemo } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
+import React, { useState, useMemo, useCallback } from 'react';
+import { motion as Motion, AnimatePresence } from 'framer-motion';
 import { 
   FolderOpen, 
   Plus, 
   MoreVertical,
   Target,
-  TrendingUp
+  TrendingUp,
+  Clock
 } from 'lucide-react';
+
+// Hoisted, memoized project card to avoid re-creation during render and unnecessary re-renders
+const ProjectCard = React.memo(({ project, onSelect }) => (
+  <motion.div
+    className="project-card"
+    whileHover={{ y: -4 }}
+    onClick={() => onSelect(project)}
+    initial={{ opacity: 0, scale: 0.9 }}
+    animate={{ opacity: 1, scale: 1 }}
+    transition={{ duration: 0.3 }}
+  >
+    <div className="project-header">
+      <div className="project-icon">
+        <FolderOpen size={24} />
+      </div>
+      <div className="project-menu">
+        <MoreVertical size={16} />
+      </div>
+    </div>
+
+    <div className="project-content">
+      <h3>{project.name}</h3>
+      <p>{project.totalTasks} tasks • {project.categories.length} categories</p>
+
+      <div className="project-progress">
+        <div className="progress-bar">
+          <div 
+            className="progress-fill"
+            style={{ width: `${project.completionRate}%` }}
+          />
+        </div>
+        <span>{project.completionRate}% complete</span>
+      </div>
+
+      <div className="project-stats">
+        <div className="stat">
+          <Target size={16} />
+          <span>{project.completedTasks}/{project.totalTasks}</span>
+        </div>
+        <div className="stat">
+          <Clock size={16} />
+          <span>{project.totalTime}h</span>
+        </div>
+        <div className={`stat priority-${project.highestPriority}`}>
+          <TrendingUp size={16} />
+          <span>{project.highestPriority}</span>
+        </div>
+      </div>
+    </div>
+  </motion.div>
+));
 
 const Projects = ({ tasks }) => {
   const [selectedProject, setSelectedProject] = useState(null);
-  const [showNewProject, setShowNewProject] = useState(false);
 
   const projectsData = useMemo(() => {
     const projectMap = new Map();
@@ -58,55 +109,10 @@ const Projects = ({ tasks }) => {
     }));
   }, [tasks]);
 
-  const ProjectCard = ({ project }) => (
-    <motion.div
-      className="project-card"
-      whileHover={{ y: -4 }}
-      onClick={() => setSelectedProject(project)}
-      initial={{ opacity: 0, scale: 0.9 }}
-      animate={{ opacity: 1, scale: 1 }}
-      transition={{ duration: 0.3 }}
-    >
-      <div className="project-header">
-        <div className="project-icon">
-          <FolderOpen size={24} />
-        </div>
-        <div className="project-menu">
-          <MoreVertical size={16} />
-        </div>
-      </div>
-      
-      <div className="project-content">
-        <h3>{project.name}</h3>
-        <p>{project.totalTasks} tasks • {project.categories.length} categories</p>
-        
-        <div className="project-progress">
-          <div className="progress-bar">
-            <div 
-              className="progress-fill"
-              style={{ width: `${project.completionRate}%` }}
-            />
-          </div>
-          <span>{project.completionRate}% complete</span>
-        </div>
-        
-        <div className="project-stats">
-          <div className="stat">
-            <Target size={16} />
-            <span>{project.completedTasks}/{project.totalTasks}</span>
-          </div>
-          <div className="stat">
-            <Clock size={16} />
-            <span>{project.totalTime}h</span>
-          </div>
-          <div className={`stat priority-${project.highestPriority}`}>
-            <TrendingUp size={16} />
-            <span>{project.highestPriority}</span>
-          </div>
-        </div>
-      </div>
-    </motion.div>
-  );
+  const handleSelectProject = useCallback((project) => setSelectedProject(project), []);
+
+  // ...later in JSX we use <ProjectCard onSelect={handleSelectProject} />
+
 
   return (
     <div className="projects-view">
@@ -115,15 +121,16 @@ const Projects = ({ tasks }) => {
           <h1>Projects</h1>
           <p>Organize and track your project progress</p>
         </div>
-        <motion.button
+        <Motion.button
           className="btn btn-primary"
-          onClick={() => setShowNewProject(true)}
+          onClick={() => alert('New project feature is coming soon')}
           whileHover={{ scale: 1.05 }}
           whileTap={{ scale: 0.95 }}
+          aria-disabled="true"
         >
           <Plus size={16} />
           New Project
-        </motion.button>
+        </Motion.button>
       </div>
 
       <div className="projects-overview">
@@ -150,7 +157,7 @@ const Projects = ({ tasks }) => {
       <div className="projects-grid">
         <AnimatePresence>
           {projectsData.map((project) => (
-            <ProjectCard key={project.name} project={project} />
+            <ProjectCard key={project.name} project={project} onSelect={handleSelectProject} />
           ))}
         </AnimatePresence>
       </div>
@@ -252,8 +259,8 @@ const Projects = ({ tasks }) => {
                   </div>
                 </div>
               </div>
-            </motion.div>
-          </motion.div>
+            </Motion.div>
+          </Motion.div>
         )}
       </AnimatePresence>
     </div>

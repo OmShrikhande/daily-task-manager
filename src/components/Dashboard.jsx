@@ -1,5 +1,5 @@
 import { useMemo } from 'react';
-import { motion } from 'framer-motion';
+import { motion as Motion } from 'framer-motion';
 import { 
   TrendingUp, 
   Clock, 
@@ -24,7 +24,7 @@ import {
 } from 'recharts';
 
 const StatCard = ({ title, value, icon: IconComponent, color, trend, subtitle }) => (
-  <motion.div
+  <Motion.div
     className="stat-card"
     whileHover={{ y: -4 }}
     initial={{ opacity: 0, y: 20 }}
@@ -47,7 +47,7 @@ const StatCard = ({ title, value, icon: IconComponent, color, trend, subtitle })
       <p>{title}</p>
       {subtitle && <small>{subtitle}</small>}
     </div>
-  </motion.div>
+  </Motion.div>
 );
 
 const Dashboard = ({ tasks, user }) => {
@@ -137,7 +137,7 @@ const Dashboard = ({ tasks, user }) => {
             whileTap={{ scale: 0.95 }}
           >
             + New Task
-          </motion.button>
+          </Motion.button>
         </div>
       </div>
 

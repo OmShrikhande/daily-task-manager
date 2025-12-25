@@ -1,10 +1,17 @@
-import { useState, useEffect } from 'react'
+import React, { useState, useEffect, Suspense } from 'react'
 import { auth, db } from '../firebase'
 import { onAuthStateChanged, signOut } from 'firebase/auth'
 import { collection, query, where, orderBy, onSnapshot } from 'firebase/firestore'
 import { Toaster } from 'react-hot-toast'
 import { Sun, Moon, LogOut, User } from 'lucide-react'
-import { motion } from 'framer-motion'
+import { motion as Motion } from 'framer-motion'
+
+// Lazy-loaded feature pages (code splitting)
+const Team = React.lazy(() => import('./components/Team'));
+const TimeTracking = React.lazy(() => import('./components/TimeTracking'));
+const Analytics = React.lazy(() => import('./components/Analytics'));
+const Settings = React.lazy(() => import('./components/Settings'));
+
 
 import Auth from './components/Auth'
 import TaskManager from './components/TaskManager'
@@ -20,7 +27,7 @@ import './styles/modern.css'
 const ThemeToggle = () => {
   const { isDarkMode, toggleTheme } = useTheme();
   return (
-    <motion.button 
+    <Motion.button 
       onClick={toggleTheme} 
       className="btn btn-secondary btn-sm"
       whileHover={{ scale: 1.05 }}
@@ -28,7 +35,7 @@ const ThemeToggle = () => {
     >
       {isDarkMode ? <Sun size={16} /> : <Moon size={16} />}
       {isDarkMode ? 'Light' : 'Dark'}
-    </motion.button>
+    </Motion.button>
   );
 };
 
@@ -52,7 +59,7 @@ function AppContent() {
     document.body.className = isDarkMode ? 'dark-mode' : '';
   }, [isDarkMode]);
 
-  // Fetch tasks when user is authenticated
+  // Subscribe to tasks when there's an authenticated user
   useEffect(() => {
     if (!user) {
       setTasks([]);
@@ -71,6 +78,8 @@ function AppContent() {
         ...doc.data()
       }));
       setTasks(taskList);
+    }, (err) => {
+      console.error('Error fetching tasks:', err);
     });
 
     return () => unsubscribe();
@@ -107,19 +116,35 @@ function AppContent() {
       case 'dashboard':
         return <Dashboard tasks={tasks} user={user} />;
       case 'tasks':
-        return <TaskManager />;
+        return <TaskManager user={user} />;
       case 'calendar':
         return <Calendar tasks={tasks} />;
       case 'projects':
         return <Projects tasks={tasks} />;
       case 'team':
-        return <div className="coming-soon"><h2>Team Management</h2><p>Coming Soon...</p></div>;
+        return (
+          <Suspense fallback={<div className="card">Loading Team...</div>}>
+            <Team tasks={tasks} user={user} />
+          </Suspense>
+        );
       case 'timetrack':
-        return <div className="coming-soon"><h2>Time Tracking</h2><p>Coming Soon...</p></div>;
+        return (
+          <Suspense fallback={<div className="card">Loading Time Tracking...</div>}>
+            <TimeTracking tasks={tasks} user={user} />
+          </Suspense>
+        );
       case 'analytics':
-        return <div className="coming-soon"><h2>Advanced Analytics</h2><p>Coming Soon...</p></div>;
+        return (
+          <Suspense fallback={<div className="card">Loading Analytics...</div>}>
+            <Analytics tasks={tasks} />
+          </Suspense>
+        );
       case 'settings':
-        return <div className="coming-soon"><h2>Settings</h2><p>Coming Soon...</p></div>;
+        return (
+          <Suspense fallback={<div className="card">Loading Settings...</div>}>
+            <Settings user={user} />
+          </Suspense>
+        );
       default:
         return <Dashboard tasks={tasks} user={user} />;
     }

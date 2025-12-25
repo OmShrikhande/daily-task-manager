@@ -1,5 +1,5 @@
-import { useState, useEffect, useMemo } from 'react';
-import { db, storage, auth } from '../../firebase';
+import React, { useState, useEffect, useMemo, useCallback } from 'react';
+import { db, storage } from '../../firebase';
 import {
   collection,
   addDoc,
@@ -12,12 +12,23 @@ import {
   where
 } from 'firebase/firestore';
 import { ref as storageRef, uploadBytes, getDownloadURL } from 'firebase/storage';
-import { motion, AnimatePresence } from 'framer-motion';
+import { motion as Motion, AnimatePresence } from 'framer-motion';
 import { Plus, Search, Filter, Calendar, Clock, Tag, Paperclip, Trash2, CheckCircle } from 'lucide-react';
 import toast from 'react-hot-toast';
 
+const categories = [
+  'development', 'design', 'testing', 'deployment', 'maintenance',
+  'meetings', 'documentation', 'research', 'bug-fixing', 'planning'
+];
 
-const TaskManager = () => {
+const priorities = [
+  { value: 'low', label: 'Low', color: '#10b981' },
+  { value: 'medium', label: 'Medium', color: '#f59e0b' },
+  { value: 'high', label: 'High', color: '#ef4444' },
+  { value: 'urgent', label: 'Urgent', color: '#dc2626' }
+];
+
+const TaskManager = ({ user }) => {
   const [task, setTask] = useState('');
   const [description, setDescription] = useState('');
   const [category, setCategory] = useState('development');
@@ -37,24 +48,16 @@ const TaskManager = () => {
   const [showAddForm, setShowAddForm] = useState(false);
   const [projects, setProjects] = useState([]);
 
-  const categories = [
-    'development', 'design', 'testing', 'deployment', 'maintenance',
-    'meetings', 'documentation', 'research', 'bug-fixing', 'planning'
-  ];
-
-  const priorities = [
-    { value: 'low', label: 'Low', color: '#10b981' },
-    { value: 'medium', label: 'Medium', color: '#f59e0b' },
-    { value: 'high', label: 'High', color: '#ef4444' },
-    { value: 'urgent', label: 'Urgent', color: '#dc2626' }
-  ];
-
   useEffect(() => {
-    if (!auth.currentUser) return;
+    if (!user) {
+      setTasks([]);
+      setProjects([]);
+      return;
+    }
 
     const tasksQuery = query(
       collection(db, 'tasks'),
-      where('userId', '==', auth.currentUser.uid),
+      where('userId', '==', user.uid),
       orderBy('createdAt', 'desc')
     );
 
@@ -68,10 +71,12 @@ const TaskManager = () => {
       // Extract unique projects
       const uniqueProjects = [...new Set(taskList.map(t => t.project).filter(p => p))];
       setProjects(uniqueProjects);
+    }, (err) => {
+      console.error('Error fetching tasks:', err);
     });
 
     return () => unsubscribe();
-  }, []);
+  }, [user]);
 
   // Filter and search tasks
   const filteredTasks = useMemo(() => {
@@ -95,14 +100,25 @@ const TaskManager = () => {
       toast.error('Please enter a task title');
       return;
     }
+
+    // simple time validation
+    if (startTime && endTime && startTime >= endTime) {
+      toast.error('End time must be after start time');
+      return;
+    }
     
+    if (!user) {
+      toast.error('You must be signed in to add tasks');
+      return;
+    }
+
     setLoading(true);
     const loadingToast = toast.loading('Adding task...');
 
     try {
       let fileUrl = '';
       if (file) {
-        const fileRef = storageRef(storage, `files/${auth.currentUser.uid}/${Date.now()}_${file.name}`);
+        const fileRef = storageRef(storage, `files/${user.uid}/${Date.now()}_${file.name}`);
         await uploadBytes(fileRef, file);
         fileUrl = await getDownloadURL(fileRef);
       }
@@ -121,8 +137,8 @@ const TaskManager = () => {
         status: 'pending',
         createdAt: Date.now(),
         completedAt: null,
-        userId: auth.currentUser.uid,
-        userEmail: auth.currentUser.email
+        userId: user.uid,
+        userEmail: user.email
       };
 
       await addDoc(collection(db, 'tasks'), newTask);
@@ -150,7 +166,7 @@ const TaskManager = () => {
     }
   };
 
-  const toggleStatus = async (taskId, currentStatus) => {
+  const toggleStatus = useCallback(async (taskId, currentStatus) => {
     const newStatus = currentStatus === 'pending' ? 'completed' : 'pending';
     const taskRef = doc(db, 'tasks', taskId);
     
@@ -161,22 +177,24 @@ const TaskManager = () => {
       });
       
       toast.success(`Task marked as ${newStatus}!`);
-    } catch {
+    } catch (err) {
+      console.error('Error toggling status:', err);
       toast.error('Error updating task status');
     }
-  };
+  }, []);
 
-  const deleteTask = async (taskId) => {
+  const deleteTask = useCallback(async (taskId) => {
     if (!window.confirm("Are you sure you want to delete this task?")) return;
     
     try {
       const taskRef = doc(db, 'tasks', taskId);
       await deleteDoc(taskRef);
       toast.success('Task deleted successfully!');
-    } catch {
+    } catch (err) {
+      console.error('Error deleting task:', err);
       toast.error('Error deleting task');
     }
-  };
+  }, []);
 
   return (
     <div className="task-manager">
@@ -186,22 +204,25 @@ const TaskManager = () => {
           <h1>Task Management</h1>
           <p>Organize and track your daily tasks efficiently</p>
         </div>
-        <motion.button
+        <Motion.button
           className="btn btn-primary"
           onClick={() => setShowAddForm(!showAddForm)}
           whileHover={{ scale: 1.05 }}
           whileTap={{ scale: 0.95 }}
+          aria-expanded={showAddForm}
+          aria-controls="add-task-form"
         >
           <Plus size={16} />
           {showAddForm ? 'Cancel' : 'Add Task'}
-        </motion.button>
+        </Motion.button>
       </div>
 
       {/* Add Task Form */}
       <AnimatePresence>
         {showAddForm && (
-          <motion.div
+          <Motion.div
             className="card"
+            id="add-task-form"
             initial={{ opacity: 0, height: 0 }}
             animate={{ opacity: 1, height: 'auto' }}
             exit={{ opacity: 0, height: 0 }}
@@ -334,7 +355,7 @@ const TaskManager = () => {
               </div>
 
               <div style={{ display: 'flex', gap: '1rem', marginTop: '1.5rem' }}>
-                <motion.button
+                <Motion.button
                   type="submit"
                   className="btn btn-primary"
                   disabled={loading}
@@ -343,7 +364,7 @@ const TaskManager = () => {
                 >
                   {loading ? 'Adding...' : 'Add Task'}
                 </motion.button>
-                <button
+                <Motion.button
                   type="button"
                   className="btn btn-secondary"
                   onClick={() => setShowAddForm(false)}
@@ -434,7 +455,7 @@ const TaskManager = () => {
                   : 'Start by adding your first task to get organized!'}
               </p>
               {!showAddForm && (
-                <motion.button
+                <Motion.button
                   className="btn btn-primary"
                   onClick={() => setShowAddForm(true)}
                   whileHover={{ scale: 1.05 }}
@@ -447,7 +468,7 @@ const TaskManager = () => {
             </motion.div>
           ) : (
             filteredTasks.map((t) => (
-              <motion.div
+              <Motion.div
                 key={t.id}
                 className={`task-item ${t.status === 'completed' ? 'completed' : ''}`}
                 layout
@@ -571,7 +592,7 @@ const TaskManager = () => {
                     Delete
                   </motion.button>
                 </div>
-              </motion.div>
+              </Motion.div>
             ))
           )}
         </AnimatePresence>
@@ -580,4 +601,4 @@ const TaskManager = () => {
   );
 };
 
-export default TaskManager;
+export default React.memo(TaskManager);

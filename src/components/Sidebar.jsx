@@ -1,4 +1,4 @@
-import { motion } from 'framer-motion';
+import { motion as Motion } from 'framer-motion';
 import { 
   LayoutDashboard, 
   CheckSquare, 
@@ -23,29 +23,29 @@ const Sidebar = ({ activeView, setActiveView, isCollapsed, setIsCollapsed }) => 
   ];
 
   return (
-    <motion.aside
+    <Motion.aside
       className={`sidebar ${isCollapsed ? 'collapsed' : ''}`}
       initial={false}
       animate={{ width: isCollapsed ? '80px' : '280px' }}
       transition={{ duration: 0.3 }}
     >
       <div className="sidebar-header">
-        <motion.button
+        <Motion.button
           className="sidebar-toggle"
           onClick={() => setIsCollapsed(!isCollapsed)}
           whileHover={{ scale: 1.1 }}
           whileTap={{ scale: 0.9 }}
         >
           ☰
-        </motion.button>
+        </Motion.button>
         {!isCollapsed && (
-          <motion.h2
+          <Motion.h2
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
           >
             TaskFlow Pro
-          </motion.h2>
+          </Motion.h2>
         )}
       </div>
 
@@ -53,7 +53,7 @@ const Sidebar = ({ activeView, setActiveView, isCollapsed, setIsCollapsed }) => 
         {menuItems.map((item) => {
           const Icon = item.icon;
           return (
-            <motion.button
+            <Motion.button
               key={item.id}
               className={`nav-item ${activeView === item.id ? 'active' : ''}`}
               onClick={() => setActiveView(item.id)}
@@ -62,11 +62,11 @@ const Sidebar = ({ activeView, setActiveView, isCollapsed, setIsCollapsed }) => 
             >
               <Icon size={20} />
               {!isCollapsed && <span>{item.label}</span>}
-            </motion.button>
+            </Motion.button>
           );
         })}
       </nav>
-    </motion.aside>
+    </Motion.aside>
   );
 };
 
