@@ -4,7 +4,7 @@ import { onAuthStateChanged, signOut } from 'firebase/auth'
 import { collection, query, where, orderBy, onSnapshot } from 'firebase/firestore'
 import { Toaster } from 'react-hot-toast'
 import { Sun, Moon, LogOut, User } from 'lucide-react'
-import { motion as Motion } from 'framer-motion'
+import { motion } from 'framer-motion'
 
 // Lazy-loaded feature pages (code splitting)
 const Team = React.lazy(() => import('./components/Team'));
@@ -27,7 +27,7 @@ import './styles/modern.css'
 const ThemeToggle = () => {
   const { isDarkMode, toggleTheme } = useTheme();
   return (
-    <Motion.button 
+    <motion.button 
       onClick={toggleTheme} 
       className="btn btn-secondary btn-sm"
       whileHover={{ scale: 1.05 }}
@@ -35,7 +35,7 @@ const ThemeToggle = () => {
     >
       {isDarkMode ? <Sun size={16} /> : <Moon size={16} />}
       {isDarkMode ? 'Light' : 'Dark'}
-    </Motion.button>
+    </motion.button>
   );
 };
 
