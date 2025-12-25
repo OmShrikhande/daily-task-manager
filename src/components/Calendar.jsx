@@ -56,8 +56,90 @@ const Calendar = ({ tasks, onAddTask }) => {
     ? tasks.filter(task => task.taskDate === selectedDate)
     : [];
 
+  // Generate contribution timeline data (last 365 days)
+  const contributionData = useMemo(() => {
+    const today = new Date();
+    const startDate = new Date(today);
+    startDate.setDate(today.getDate() - 364);
+    const startDayOfWeek = startDate.getDay(); // 0 = Sunday
+    const adjustedStart = new Date(startDate);
+    adjustedStart.setDate(startDate.getDate() - startDayOfWeek);
+
+    const data = [];
+    for (let i = 0; i < 364; i++) {
+      const date = new Date(adjustedStart);
+      date.setDate(adjustedStart.getDate() + i);
+      const dateStr = date.toISOString().split('T')[0];
+      
+      const dayTasks = tasks.filter(task => task.taskDate === dateStr);
+      const completedCount = dayTasks.filter(t => t.status === 'completed').length;
+      
+      data.push({
+        date: dateStr,
+        count: completedCount,
+        level: completedCount === 0 ? 0 : 
+               completedCount <= 2 ? 1 : 
+               completedCount <= 4 ? 2 : 
+               completedCount <= 6 ? 3 : 4
+      });
+    }
+    
+    // Group into weeks (7 days each)
+    const weekData = [];
+    for (let i = 0; i < data.length; i += 7) {
+      weekData.push(data.slice(i, i + 7));
+    }
+    
+    return { data: weekData, totalDays: data.length };
+  }, [tasks]);
+
   return (
     <div className="calendar-view">
+      {/* Contribution Timeline */}
+      <div className="contribution-timeline">
+        <div className="timeline-header">
+          <h3>Task Completion Timeline</h3>
+          <div className="legend">
+            <span>Less</span>
+            <div className="legend-squares">
+              <div className="legend-square level-0"></div>
+              <div className="legend-square level-1"></div>
+              <div className="legend-square level-2"></div>
+              <div className="legend-square level-3"></div>
+              <div className="legend-square level-4"></div>
+            </div>
+            <span>More</span>
+          </div>
+        </div>
+        
+        <div className="timeline-grid">
+          <div className="weekday-labels">
+            <div>Sun</div>
+            <div>Mon</div>
+            <div>Tue</div>
+            <div>Wed</div>
+            <div>Thu</div>
+            <div>Fri</div>
+            <div>Sat</div>
+          </div>
+          
+          <div className="weeks-grid">
+            {contributionData.data.map((week, weekIndex) => (
+              <div key={weekIndex} className="week-column">
+                {week.map((day, dayIndex) => (
+                  <Motion.div
+                    key={day.date}
+                    className={`day-square level-${day.level}`}
+                    whileHover={{ scale: 1.2 }}
+                    title={`${day.count} tasks completed on ${new Date(day.date).toLocaleDateString()}`}
+                    onClick={() => setSelectedDate(day.date)}
+                  />
+                ))}
+              </div>
+            ))}
+          </div>
+        </div>
+      </div>
       <div className="calendar-header">
         <div className="calendar-nav">
           <Motion.button
