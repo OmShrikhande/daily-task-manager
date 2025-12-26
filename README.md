@@ -1,82 +1,90 @@
 <div align="center">
 
-# ✅ Task Manager Web App  
+<h1>✅ Task Manager Web App</h1>
 
-🚀 **A modern, fast & beautiful task management application**  
-Built with **React · Vite · Firebase · Framer Motion**
+<h3>🚀 A modern, fast & beautiful task management application</h3>
 
-✨ _Secure · Animated · Responsive · Production-Ready_
+<h4>Built with React · Vite · Firebase · Framer Motion</h4>
+
+✨ <strong>Secure · Animated · Responsive · Production-Ready</strong>
 
 ---
 
-<!-- BADGES (optional)
-![React](https://img.shields.io/badge/React-19-blue?logo=react)
-![Vite](https://img.shields.io/badge/Vite-Fast-yellow?logo=vite)
-![Firebase](https://img.shields.io/badge/Firebase-Auth%20%26%20DB-orange?logo=firebase)
-![License](https://img.shields.io/badge/License-MIT-green)
-![Status](https://img.shields.io/badge/Status-Active-success) -->
+<!-- BADGES -->
+<img src="https://img.shields.io/badge/React-19-blue?logo=react" />
+<img src="https://img.shields.io/badge/Vite-Fast-yellow?logo=vite" />
+<img src="https://img.shields.io/badge/Firebase-Auth%20%26%20DB-orange?logo=firebase" />
+<img src="https://img.shields.io/badge/License-MIT-green" />
+<img src="https://img.shields.io/badge/Status-Active-success" />
 
 </div>
 
 ---
 
-## 🌐 Live Demo
+<h2>🌐 Live Demo</h2>
 
-🔗 **Live Website:* https://your-karma-manager.netlify.app/*
-🎥 **Demo Preview:**
-![Preview Image](<ChatGPT Image Dec 26, 2025, 12_33_33 PM.png>)
+🔗 <strong>Live Website:</strong>  
+👉 https://your-karma-manager.netlify.app/
 
+<h3>🎥 Demo Preview</h3>
 
-✨ Features
+![Preview Image](ChatGPT Image Dec 26, 2025, 12_33_33 PM.png)
 
-🔐 Authentication
+---
 
-Email & Password login using Firebase Authentication
+<h2>✨ Features</h2>
 
-Secure, user-based access
+<h3>🔐 Authentication</h3>
 
-📝 Task Management
+- Email & Password login using Firebase Authentication  
+- Secure, user-based access  
 
-Create, edit & delete tasks
+<h3>📝 Task Management</h3>
 
-User-specific task isolation
+- Create, edit & delete tasks  
+- User-specific task isolation  
+- Real-time updates  
 
-Real-time updates
+<h3>🌗 Theme Support</h3>
 
-🌗 Theme Support
+- Light / Dark mode toggle  
+- Global theme state via React Context  
 
-Light / Dark mode toggle
+<h3>🎬 Smooth Animations</h3>
 
-Global theme state via React Context
+- Beautiful transitions using Framer Motion  
 
-🎬 Smooth Animations
+<h3>⚡ Performance</h3>
 
-Beautiful transitions using Framer Motion
+- Lightning-fast builds with Vite  
+- Optimized production output  
 
-⚡ Performance
+<h3>📱 Responsive Design</h3>
 
-Lightning-fast builds with Vite
+- Fully mobile-friendly UI  
 
-Optimized production output
+<h3>🧹 Code Quality</h3>
 
-📱 Responsive Design
+- ESLint enforced  
+- Clean folder structure  
 
-Fully mobile-friendly UI
+---
 
-🧹 Code Quality
+<h2>🛠️ Tech Stack</h2>
 
-ESLint enforced
+| ⚙️ Technology | 🔍 Purpose |
+|--------------|-----------|
+| ⚛️ React ^19 | Frontend UI |
+| ⚡ Vite | Development & Build |
+| 🔥 Firebase | Auth & Database |
+| 🎞️ Framer Motion | Animations |
+| 🧹 ESLint | Code Quality |
 
-Clean folder structure
+---
 
-🛠️ Tech Stack
-⚙️ Technology	🔍 Purpose
-⚛️ React ^19	Frontend UI
-⚡ Vite	Development & Build
-🔥 Firebase	Auth & Database
-🎞️ Framer Motion	Animations
-🧹 ESLint	Code Quality
-📂 Project Structure
+<h2>📂 Project Structure</h2>
+
+```txt
 src/
  ├─ components/
  │   ├─ Auth.jsx            # 🔐 Authentication UI
@@ -90,25 +98,23 @@ src/
 firebase.js                   # 🔥 Firebase configuration
 netlify.toml                  # 🚀 Netlify deploy config
 package.json                  # 📦 Scripts & dependencies
-
-⚙️ Installation & Setup
-📌 Prerequisites
+<h2>⚙️ Installation & Setup</h2> <h3>📌 Prerequisites</h3>
 
 ✔️ Node.js v18+
 ✔️ npm or yarn
 
-📥 Clone Repository
+<h3>📥 Clone Repository</h3>
 git clone <your-repo-url>
 cd daily-task-manager
 
-📦 Install Dependencies
+<h3>📦 Install Dependencies</h3>
 npm install
 # or
 yarn install
 
-🔐 Environment Variables
+<h2>🔐 Environment Variables</h2>
 
-Create a .env file in the root directory:
+Create a <strong>.env</strong> file in the root directory:
 
 VITE_FIREBASE_API_KEY=your_api_key
 VITE_FIREBASE_AUTH_DOMAIN=your_project.firebaseapp.com
@@ -118,37 +124,26 @@ VITE_FIREBASE_MESSAGING_SENDER_ID=your_sender_id
 VITE_FIREBASE_APP_ID=your_app_id
 
 
-⚠️ Security Note:
+⚠️ <strong>Security Note:</strong>
 Firebase config is safe for frontend usage, but Firestore rules must restrict access to authenticated users only.
 
-▶️ Running the Project
-
-🚀 Start Development Server
-
+<h2>▶️ Running the Project</h2> <h3>🚀 Start Development Server</h3>
 npm run dev
 
 
 🌍 App runs at:
-
 http://localhost:5173
 
-
-📦 Build for Production
-
+<h3>📦 Build for Production</h3>
 npm run build
 
-
-👀 Preview Production Build
-
+<h3>👀 Preview Production Build</h3>
 npm run preview
 
-
-🧹 Run ESLint
-
+<h3>🧹 Run ESLint</h3>
 npm run lint
 
-🚀 Deployment
-🌍 Netlify (Recommended)
+<h2>🚀 Deployment</h2> <h3>🌍 Netlify (Recommended)</h3>
 
 1️⃣ Push project to GitHub
 2️⃣ Import repository in Netlify
@@ -161,11 +156,11 @@ Publish Directory: dist
 
 🎉 Deploy!
 
-🔥 Firebase Hosting (Optional)
+<h3>🔥 Firebase Hosting (Optional)</h3>
 firebase init
 firebase deploy
 
-🛣️ Roadmap
+<h2>🛣️ Roadmap</h2>
 
 🚧 Upcoming Features:
 
@@ -179,7 +174,7 @@ firebase deploy
 
 🧪 Unit & integration tests
 
-🤝 Contributing
+<h2>🤝 Contributing</h2>
 
 💡 Contributions are welcome!
 
@@ -188,13 +183,12 @@ firebase deploy
 3️⃣ Run npm run lint
 4️⃣ Open a pull request
 
-📄 License
+<h2>📄 License</h2>
 
-📜 This project is licensed under the MIT License.
+📜 This project is licensed under the <strong>MIT License</strong>.
 
-<div align="center">
-💙 Built with passion using React & Firebase
+<div align="center"> <h3>💙 Built with passion using React & Firebase</h3>
 
-⭐ If you like this project, give it a star! ⭐
+⭐ <strong>If you like this project, give it a star!</strong> ⭐
 
 </div> ```
