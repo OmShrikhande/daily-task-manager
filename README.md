@@ -1,134 +1,188 @@
-# Task Manager ✅
+<div align="center">
 
-A simple, modern task manager web app built with **React**, **Vite**, and **Firebase**. The app demonstrates authentication, task CRUD, theming, and smooth UI animations with **Framer Motion**.
+<h1>Karma-Manager</h1>
 
----
+<h3>🚀 A modern, fast & beautiful task management application</h3>
 
-## 🚀 Features
+<h4>Built with React · Vite · Firebase · Framer Motion</h4>
 
-- User authentication (Email / Password) using **Firebase Authentication**
-- Create, read, update, and delete tasks (client-side / Firebase backend)
-- Theme toggling via `ThemeContext` (light/dark)
-- Animated UI with **Framer Motion**
-- Fast dev experience using **Vite**
-- Linting with **ESLint**
+✨ <strong>Secure · Animated · Responsive · Production-Ready</strong>
 
 ---
 
-## 🧩 Tech Stack
+<!-- BADGES -->
+<img src="https://img.shields.io/badge/React-19-blue?logo=react" />
+<img src="https://img.shields.io/badge/Vite-Fast-yellow?logo=vite" />
+<img src="https://img.shields.io/badge/Firebase-Auth%20%26%20DB-orange?logo=firebase" />
+<img src="https://img.shields.io/badge/License-MIT-green" />
+<img src="https://img.shields.io/badge/Status-Active-success" />
 
-- React ^19
-- Vite
-- Firebase
-- Framer Motion
-- ESLint
+</div>
 
 ---
 
-## 📁 Project Structure (important files)
+<h2>🌐 Live Demo</h2>
 
-```
+🔗 <strong>Live Website:</strong>  
+👉 https://your-karma-manager.netlify.app/
+
+<h3>🎥 Demo Preview</h3>
+
+![Preview Image](<ChatGPT Image Dec 26, 2025, 12_33_33 PM-1.png>)
+
+---
+
+<h2>✨ Features</h2>
+
+<h3>🔐 Authentication</h3>
+
+- Email & Password login using Firebase Authentication  
+- Secure, user-based access  
+
+<h3>📝 Task Management</h3>
+
+- Create, edit & delete tasks  
+- User-specific task isolation  
+- Real-time updates  
+
+<h3>🌗 Theme Support</h3>
+
+- Light / Dark mode toggle  
+- Global theme state via React Context  
+
+<h3>🎬 Smooth Animations</h3>
+
+- Beautiful transitions using Framer Motion  
+
+<h3>⚡ Performance</h3>
+
+- Lightning-fast builds with Vite  
+- Optimized production output  
+
+<h3>📱 Responsive Design</h3>
+
+- Fully mobile-friendly UI  
+
+<h3>🧹 Code Quality</h3>
+
+- ESLint enforced  
+- Clean folder structure  
+
+---
+
+<h2>🛠️ Tech Stack</h2>
+
+| ⚙️ Technology | 🔍 Purpose |
+|--------------|-----------|
+| ⚛️ React ^19 | Frontend UI |
+| ⚡ Vite | Development & Build |
+| 🔥 Firebase | Auth & Database |
+| 🎞️ Framer Motion | Animations |
+| 🧹 ESLint | Code Quality |
+
+---
+
+<h2>📂 Project Structure</h2>
+
+```txt
 src/
-  ├─ components/
-  │   ├─ Auth.jsx            # Authentication UI
-  │   └─ TaskManager.jsx     # Main task management UI
-  ├─ context/
-  │   └─ ThemeContext.jsx    # Theme provider
-  ├─ assets/
-  ├─ App.jsx
-  └─ main.jsx
+ ├─ components/
+ │   ├─ Auth.jsx            # 🔐 Authentication UI
+ │   └─ TaskManager.jsx     # 📝 Task CRUD logic
+ ├─ context/
+ │   └─ ThemeContext.jsx    # 🌗 Theme Provider
+ ├─ assets/
+ ├─ App.jsx
+ └─ main.jsx
 
-firebase.js                   # Firebase initialization (uses environment vars)
-netlify.toml                  # Netlify deploy configuration
-package.json                  # Scripts & dependencies
-```
+firebase.js                   # 🔥 Firebase configuration
+netlify.toml                  # 🚀 Netlify deploy config
+package.json                  # 📦 Scripts & dependencies
+<h2>⚙️ Installation & Setup</h2> <h3>📌 Prerequisites</h3>
 
----
+✔️ Node.js v18+
+✔️ npm or yarn
 
-## ⚙️ Getting Started
-
-### Requirements
-
-- Node.js 18+ (or compatible)
-- npm or yarn
-
-### Install
-
-```bash
-# Clone
-git clone <repo-url>
+<h3>📥 Clone Repository</h3>
+git clone <your-repo-url>
 cd daily-task-manager
 
-# Install dependencies
+<h3>📦 Install Dependencies</h3>
 npm install
 # or
-# yarn
-```
+yarn install
 
-### Environment
+<h2>🔐 Environment Variables</h2>
 
-This project expects Firebase credentials to be available. Create a `.env` file at the project root or configure environment variables in your hosting provider (Netlify). Example variables (prefix VITE_ for Vite):
+Create a <strong>.env</strong> file in the root directory:
 
-```
 VITE_FIREBASE_API_KEY=your_api_key
 VITE_FIREBASE_AUTH_DOMAIN=your_project.firebaseapp.com
 VITE_FIREBASE_PROJECT_ID=your_project_id
 VITE_FIREBASE_STORAGE_BUCKET=your_project.appspot.com
 VITE_FIREBASE_MESSAGING_SENDER_ID=your_sender_id
 VITE_FIREBASE_APP_ID=your_app_id
-```
 
-The project reads these in `firebase.js` to initialize Firebase. Keep these values secret for production.
 
-### Scripts
+⚠️ <strong>Security Note:</strong>
+Firebase config is safe for frontend usage, but Firestore rules must restrict access to authenticated users only.
 
-- `npm run dev` — Start development server (Vite)
-- `npm run build` — Build production bundle
-- `npm run preview` — Preview production build locally
-- `npm run lint` — Run ESLint
+<h2>▶️ Running the Project</h2> <h3>🚀 Start Development Server</h3>
+npm run dev
 
----
 
-## 🧪 Development Notes
+🌍 App runs at:
+http://localhost:5173
 
-- The project uses **React** with functional components and hooks.
-- If you add TypeScript, keep `.d.ts` or migrate files step-by-step.
-- Keep ESLint passing before committing; run `npm run lint`.
+<h3>📦 Build for Production</h3>
+npm run build
 
----
+<h3>👀 Preview Production Build</h3>
+npm run preview
 
-## 📦 Deployment
+<h3>🧹 Run ESLint</h3>
+npm run lint
 
-### Netlify
+<h2>🚀 Deployment</h2> <h3>🌍 Netlify (Recommended)</h3>
 
-This repo includes a `netlify.toml` file. To deploy:
+1️⃣ Push project to GitHub
+2️⃣ Import repository in Netlify
+3️⃣ Add environment variables
+4️⃣ Set:
 
-1. Push to GitHub (or Git provider)
-2. Connect the repo in Netlify
-3. Set the environment variables in the Netlify dashboard (use the `VITE_` prefixed vars)
-4. Set the build command to `npm run build` and publish directory to `dist`
+Build Command: npm run build
 
-### Firebase (optional)
+Publish Directory: dist
 
-If you use Firebase Hosting, add the Firebase CLI, run `firebase init` and deploy with `firebase deploy` (replace hosting configuration as needed).
+🎉 Deploy!
 
----
+<h3>🔥 Firebase Hosting (Optional)</h3>
+firebase init
+firebase deploy
 
-## 🤝 Contributing
+<h2>🛣️ Roadmap</h2>
 
-Contributions are welcome! Please open issues for bugs or feature requests and send pull requests for fixes.
+🚧 Upcoming Features:
 
-1. Fork the repo
-2. Create a branch for your feature/fix
-3. Run tests / lint locally
-4. Open a PR with a clear description
+⏰ Task deadlines & reminders
 
----
+📂 Categories & tags
 
-## 📄 License
+🧲 Drag-and-drop task ordering
 
-This project is available under the **MIT License**. See `LICENSE` for details.
+🔔 Notifications
 
----
+🧪 Unit & integration tests
 
-If you'd like, I can also add a short demo GIF, update `netlify.toml` notes, or add a Contribution file and PR template. 🔧   
+<h2>🤝 Contributing</h2>
+
+💡 Contributions are welcome!
+
+1️⃣ Fork the repository
+2️⃣ Create a feature branch
+3️⃣ Run npm run lint
+4️⃣ Open a pull request
+
+<h2>📄 License</h2>
+📜 This project is licensed under the <strong>MIT License</strong>.
+<div align="center"> 💙 Built with passion using React & Firebase ⭐ If you like this project, give it a star! ⭐ </div>
