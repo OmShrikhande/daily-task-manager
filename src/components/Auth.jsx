@@ -20,6 +20,7 @@ const Auth = () => {
       case 'auth/user-not-found':
       case 'auth/wrong-password':
       case 'auth/invalid-credential':
+      case 'auth/invalid-login-credentials':
         return 'Invalid email or password.';
       case 'auth/email-already-in-use':
         return 'Email is already in use.';
@@ -29,13 +30,23 @@ const Auth = () => {
         return 'Operation not allowed.';
       case 'auth/too-many-requests':
         return 'Too many failed attempts. Please try again later.';
+      case 'auth/missing-password':
+        return 'Password is required.';
       default:
-        return 'An unexpected error occurred. Please try again.';
+        // Log the unknown error code for debugging purposes
+        console.error('Unknown Auth Error:', errorCode);
+        return 'Invalid email or password.';
     }
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    
+    if (!email.trim() || !password.trim()) {
+      toast.error('Please fill in all fields.');
+      return;
+    }
+
     try {
       if (isLogin) {
         await signInWithEmailAndPassword(auth, email, password);
