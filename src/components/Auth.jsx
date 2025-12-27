@@ -1,19 +1,41 @@
 import { useState } from 'react';
 import { auth, db } from '../../firebase';
 import { createUserWithEmailAndPassword, signInWithEmailAndPassword } from 'firebase/auth';
-import { doc, setDoc, getDoc } from 'firebase/firestore';
+import { doc, setDoc } from 'firebase/firestore';
 // eslint-disable-next-line no-unused-vars
 import { motion, AnimatePresence } from 'framer-motion';
+import { toast } from 'react-hot-toast';
 
 const Auth = () => {
   const [isLogin, setIsLogin] = useState(true);
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const [error, setError] = useState('');
+
+  const getFriendlyErrorMessage = (errorCode) => {
+    switch (errorCode) {
+      case 'auth/invalid-email':
+        return 'Invalid email address format.';
+      case 'auth/user-disabled':
+        return 'This account has been disabled.';
+      case 'auth/user-not-found':
+      case 'auth/wrong-password':
+      case 'auth/invalid-credential':
+        return 'Invalid email or password.';
+      case 'auth/email-already-in-use':
+        return 'Email is already in use.';
+      case 'auth/weak-password':
+        return 'Password should be at least 6 characters.';
+      case 'auth/operation-not-allowed':
+        return 'Operation not allowed.';
+      case 'auth/too-many-requests':
+        return 'Too many failed attempts. Please try again later.';
+      default:
+        return 'An unexpected error occurred. Please try again.';
+    }
+  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setError('');
     try {
       if (isLogin) {
         await signInWithEmailAndPassword(auth, email, password);
@@ -36,7 +58,8 @@ const Auth = () => {
         });
       }
     } catch (err) {
-      setError(err.message);
+      const message = getFriendlyErrorMessage(err.code);
+      toast.error(message);
     }
   };
 
@@ -84,18 +107,6 @@ const Auth = () => {
               placeholder="••••••••"
             />
           </div>
-          <AnimatePresence>
-            {error && (
-              <motion.div 
-                className="error-message"
-                initial={{ opacity: 0, height: 0 }}
-                animate={{ opacity: 1, height: 'auto' }}
-                exit={{ opacity: 0, height: 0 }}
-              >
-                {error}
-              </motion.div>
-            )}
-          </AnimatePresence>
           <motion.button 
             type="submit" 
             className="btn btn-primary" 
